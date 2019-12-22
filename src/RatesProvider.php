@@ -51,20 +51,12 @@
 			return Utilities::curlGET($api_url);
 		}
 		
-		public function updateRates() {
+		function currencys2rates($currency_tags = 'BTC'): array {
 			$api_endpoint = 'coin';
 			$api_parameters = [
 				'pref'   => 'USD',
-				'symbol' => 'BTC,ETH,XMR,MFC,LTC,DOGE'
+				'symbol' => $currency_tags
 			];
-			//deprecated
-			//echo $this->CoinMarketCapGET($api_endpoint, $api_parameters);
-			$result = $this->CoinLibGET($api_endpoint, $api_parameters);
-			//file_put_contents(__DIR__ . '/../cron/result.txt', $result); //debug
-			if(! Utilities::isJson($result)) {
-				return;
-			}
-			
 			$rates_data = [];
 			$round_precisions = [
 				'USD' => 4,
@@ -74,8 +66,17 @@
 				'LTC' => 6,
 				'ETH' => 6
 			];
+			$result = $this->CoinLibGET($api_endpoint, $api_parameters);
+			//exit($result);
+			//file_put_contents(__DIR__ . '/../cron/result.txt', $result); //debug
+			if(! Utilities::isJson($result)) {
+				$parsed_data = [];
+				//exit($result);
+			} else {
+				$parsed_data = json_decode($result, true);
+			}
 			
-			$parsed_data = json_decode($result, true);
+			//exit(count($parsed_data['coins']) . ' ');
 			for($i=0; $i < count($parsed_data['coins']); $i++) {
 				$coin_info = $parsed_data['coins'][$i];
 				$coin_tag  = $coin_info['symbol'];
@@ -91,7 +92,12 @@
 					$rates_data[$coin_tag] = number_format(1 / $price, $precision, '.', '');
 				}
 			}
-			
+			return $rates_data;
+		}
+		
+		public function updateRates() {
+			$currency_tags = 'BTC,ETH,XMR,MFC,LTC,DOGE,RUB,EUR,CNY,KZT';
+			$rates_data = $this->currencys2rates($currency_tags);
 			file_put_contents($this->getRatesPath(), json_encode($rates_data));
 		}
 	}

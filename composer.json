@@ -1,6 +1,6 @@
 {
     "require": {
-    "sagleft/utopialib-php": "dev-master",
+    "sagleft/utopialib-php": "^1.0",
     "phpunit/phpunit": "^7.5",
     "vlucas/phpdotenv": "^3.6"
   },

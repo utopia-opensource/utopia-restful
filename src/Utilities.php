@@ -18,6 +18,39 @@
 			return $string;
 		}
 		
+		function cURL($url, $ref, $header, $cookie, $p = null): string {
+			$ch =  curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			if(isset($_SERVER['HTTP_USER_AGENT'])) {
+				curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+			}
+			if($ref != '') {
+				curl_setopt($ch, CURLOPT_REFERER, $ref);
+			}
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+			if($cookie != '') {
+				curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+			}
+			if ($p) {
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $p);
+			}
+			$result =  curl_exec($ch);
+			curl_close($ch);
+			if ($result){
+				return $result;
+			} else {
+				return '';
+			}
+		}
+		
+		function curlGET($url): string {
+			return Utilities::cURL($url, '', '', '');
+		}
+		
 		function json_decode_nice($json = "", $assoc = FALSE){ 
 			$json = str_replace(["\n", "\r"], "", $json);
 			$json = preg_replace('/([{,]+)(\s*)([^"]+?)\s*:/','$1"$3":',$json);

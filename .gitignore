@@ -1,4 +1,12 @@
-composer.lock
+# composer
+vendor/**
+# logs
+/logs/**
+# data
+.env
+.htaccess
 phpunit.xml
-vendor
-/logs/
+/data/**
+# temp
+/cron/result.txt
+.env

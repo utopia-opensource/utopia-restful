@@ -174,5 +174,16 @@
 					break;
 			}
 			break;
+		case 'rates':
+			$level++;
+			$to_currency = $logic->solver->getPart($level);
+			$rates_provider = new UtopiaREST\RatesProvider();
+			$rates = $rates_provider->getRates($to_currency);
+			if($rates == []) {
+				$logic->printError('Failed to get course data. ' . $rates_provider->last_error);
+			} else {
+				$logic->printResult($rates);
+			}
+			break;
 	}
 	

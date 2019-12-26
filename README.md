@@ -47,7 +47,7 @@ curl http://rest/api/help
 ```json
 {
 	"version": "1.0.1",
-	"date": "2019-12-22",
+	"date": "2019-12-26",
 	"commands": 
 	{
 		"/api/sticker/collections": "returns collection names of stickers",
@@ -60,6 +60,7 @@ curl http://rest/api/help
 		"/api/channel/moderators/<channelid>": "returns the list of public keys of moderators",
 		"/api/channel/contacts/<channelid>": "returns the list of contacts on channel with details",
 		"/api/channel/system_info/<channelid>": "returns system properties of channel",
+		"/api/channel/send_message/<channelid>/<message>/<token>": "send a message to the channel by this id, indicating the api account token. will return request status",
 		"/api/uns/search/<pubkey>": "returns the list of all uNS names registered for this public key",
 		"/api/uns/search/<nick>": "returns the list of all uNS names registered for this nick",
 		"/api/uns/sync_info": "returns statistics value of sync process",

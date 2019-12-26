@@ -32,7 +32,7 @@
 		
 		public function getPart($index = 2): string {
 			if(count($this->request_parts) > $index) {
-				return urldecode($this->request_parts[$index]);
+				return urldecode(trim($this->request_parts[$index]));
 			} else {
 				$this->last_error = 'request element #' . $index . ' not found';
 				return '';

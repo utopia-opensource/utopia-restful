@@ -123,5 +123,9 @@
 		public function ucodeDecode($base64_image = ''): string {
 			return $this->client->ucodeDecode($base64_image);
 		}
+		
+		public function sendChannelMessage($channelid, $message = "test message"): string {
+			return $this->client->sendChannelMessage($channelid, $message);
+		}
 	}
 	

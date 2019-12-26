@@ -34,13 +34,13 @@
 					$level++;
 					$collection_name = $logic->solver->getPart($level);
 					if($collection_name == '') {
-						$logic->printError('you must set collection_name parameter');
+						$logic->printError('you must set <collection_name> parameter');
 					}
 					
 					$level++;
 					$sticker_name = $logic->solver->getPart($level);
 					if($sticker_name == '') {
-						$logic->printError('you must set sticker_name parameter');
+						$logic->printError('you must set <sticker_name> parameter');
 					}
 					
 					$result = $logic->getImageSticker($collection_name, $sticker_name);
@@ -67,7 +67,7 @@
 					$level++;
 					$channelid = $logic->solver->getPart($level);
 					if($channelid == '') {
-						$logic->printError('you must set channelid parameter');
+						$logic->printError('you must set <channelid> parameter');
 					}
 					$result = $logic->getChannelInfo($channelid);
 					$logic->printResult($result);
@@ -77,7 +77,7 @@
 					$level++;
 					$channelid = $logic->solver->getPart($level);
 					if($channelid == '') {
-						$logic->printError('you must set channelid parameter');
+						$logic->printError('you must set <channelid> parameter');
 					}
 					$result = $logic->getChannelModerators($channelid);
 					$logic->printResult($result, false);
@@ -87,7 +87,7 @@
 					$level++;
 					$channelid = $logic->solver->getPart($level);
 					if($channelid == '') {
-						$logic->printError('you must set channelid parameter');
+						$logic->printError('you must set <channelid> parameter');
 					}
 					$result = $logic->getChannelContacts($channelid);
 					$logic->printResult($result, false);
@@ -96,11 +96,40 @@
 					//getChannelSystemInfo
 					$level++;
 					$channelid = $logic->solver->getPart($level);
+					//TODO: use client->verifyChannelID method
 					if($channelid == '') {
-						$logic->printError('you must set channelid parameter');
+						$logic->printError('you must set <channelid> parameter');
 					}
 					$result = $logic->getChannelSystemInfo($channelid);
 					$logic->printResult($result);
+					break;
+				case 'send_message':
+					//sendChannelMessage
+					$level++;
+					$request_channelid = $logic->solver->getPart($level);
+					if($request_channelid == '') {
+						//TODO: these checks can be collected in a separate method
+						$logic->printError('you must set <channelid> parameter');
+					}
+					$level++;
+					$request_message = $logic->solver->getPart($level);
+					if($request_message == '') {
+						$logic->printError('you must set <message> parameter');
+					}
+					$level++;
+					$request_token   = $logic->solver->getPart($level);
+					if($request_token == '') {
+						$logic->printError('you must set <token> parameter');
+					}
+					if(strlen($request_token) != 32) {
+						//TODO: create verifyToken method in utopia-php lib
+						$logic->printError('invalid token given. Code 94VD0E');
+					}
+					if($request_token != getenv('utopia_token')) {
+						$logic->printError('invalid token given. Code 0Z2L1F');
+					}
+					$result = $logic->sendChannelMessage($request_channelid, $request_message);
+					$logic->printResult(['result' => $result]);
 					break;
 			}
 			break;

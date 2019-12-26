@@ -9,4 +9,3 @@ phpunit.xml
 /data/**
 # temp
 /cron/result.txt
-.env

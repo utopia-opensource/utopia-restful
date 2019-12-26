@@ -18,7 +18,18 @@
 			if(! Utilities::isJson($rates_json)) {
 				return [];
 			}
-			return json_decode($rates_json, true);
+			$rates_arr = json_decode($rates_json, true);
+			if($to_currency == '') {
+				return $rates_arr;
+			} else {
+				if(isset($rates_arr[$to_currency])) {
+					return [
+						$to_currency => $rates_arr[$to_currency]
+					];
+				} else {
+					return $rates_arr;
+				}
+			}
 		}
 		
 		function CoinMarketCapGET($endpoint = 'cryptocurrency/map', $parameters = []): string {

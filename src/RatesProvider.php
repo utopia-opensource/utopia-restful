@@ -109,6 +109,7 @@
 		public function updateRates() {
 			$currency_tags = 'BTC,ETH,XMR,MFC,LTC,DOGE,RUB,EUR,CNY,KZT';
 			$rates_data = $this->currencys2rates($currency_tags);
+			$rates_data['USD'] = '1.0';
 			file_put_contents($this->getRatesPath(), json_encode($rates_data));
 		}
 	}

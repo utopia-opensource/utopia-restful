@@ -125,10 +125,48 @@
 						//TODO: create verifyToken method in utopia-php lib
 						$logic->printError('invalid token given. Code 94VD0E');
 					}
-					if($request_token != getenv('utopia_token')) {
+					if(! $logic->checkClientToken($request_token)) {
 						$logic->printError('invalid token given. Code 0Z2L1F');
 					}
 					$result = $logic->sendChannelMessage($request_channelid, $request_message);
+					$logic->printResult(['result' => $result]);
+					break;
+				case 'send_image':
+					$level++;
+					$request_channelid = $logic->solver->getPart($level);
+					if($request_channelid == '') {
+						//TODO: these checks can be collected in a separate method
+						$logic->printError('you must set <channelid> parameter');
+					}
+					$level++;
+					$img_url = base64_decode($logic->solver->getPart($level));
+					if($img_url == '') {
+						$logic->printError('you must set <image_url> parameter');
+					}
+					//TODO: verify url
+					$level++;
+					$request_token = $logic->solver->getPart($level);
+					if($request_token == '') {
+						$logic->printError('you must set <token> parameter');
+					}
+					if(strlen($request_token) != 32) {
+						//TODO: create verifyToken method in utopia-php lib
+						$logic->printError('invalid token given. Code 94VD0F');
+					}
+					$level++;
+					//$comment = $logic->solver->getPart($level);
+					
+					if(! $logic->checkClientToken($request_token)) {
+						$logic->printError('invalid token given. Code 0Z2L1G');
+					}
+					
+					$image_file = file_get_contents ($img_url, false);
+					if($image_file == false) {
+						$logic->printError('Failed to upload image. Code 4LX1Z8');
+					}
+					$image_base64 = base64_encode($image_file);
+					
+					$result = $logic->sendChannelPicture($request_channelid, $image_base64);
 					$logic->printResult(['result' => $result]);
 					break;
 			}

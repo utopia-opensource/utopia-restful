@@ -127,5 +127,17 @@
 		public function sendChannelMessage($channelid, $message = "test message"): string {
 			return $this->client->sendChannelMessage($channelid, $message);
 		}
+		
+		public function checkClientToken($request_token = ''): bool {
+			if($request_token != getenv('utopia_token')) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		
+		public function sendChannelPicture($request_channelid, $image_base64) {
+			return $this->client->sendChannelPicture($request_channelid, $image_base64);
+		}
 	}
 	

@@ -1,4 +1,7 @@
 <?php
+	header("Access-Control-Allow-Origin: *");
+	header('Access-Control-Max-Age: 240');
+	
 	require_once __DIR__ . '/../vendor/autoload.php';
 	
 	$logic = new UtopiaREST\Logic();

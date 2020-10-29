@@ -11,7 +11,7 @@ touch data/crypton_rates.json
 cd public_html
 cp example.htaccess .htaccess
 cd ../test/data
-cp example.htaccess .htaccess
+cp example.env .env
 ```
 
 * set `utopia_token` and `utopia_http_port` in `.env`;
